@@ -8,12 +8,12 @@
  *      INCLUDES
  *********************/
 #define _DEFAULT_SOURCE /* needed for usleep() */
+#define SDL_MAIN_HANDLED /*To fix SDL's "undefined reference to WinMain" issue*/
+
 #include <stdlib.h>
 #include <unistd.h>
-#define SDL_MAIN_HANDLED /*To fix SDL's "undefined reference to WinMain" issue*/
 #include "lvgl/lvgl.h"
 
-#include "lv_drivers/display/fbdev.h"
 #include "lv_drivers/display/monitor.h"
 
 
@@ -25,10 +25,12 @@ static int tick_thread(void *data);
 static void spinner_wheel(void);
 
 
-
 /**********************
- *   GLOBAL FUNCTIONS
+ *  STATIC VARIABLES
  **********************/
+#  define MONITOR_HOR_RES     1280
+#  define MONITOR_VER_RES     720
+
 
 int main(int argc, char **argv)
 {
@@ -77,6 +79,7 @@ static void pc_window_simulator(void)
 {
   /* Use the 'monitor' driver which creates window on PC's monitor to simulate a display*/
   monitor_init();
+
   /* Tick init.
    * You have to call 'lv_tick_inc()' in periodically to inform LittelvGL about
    * how much time were elapsed Create an SDL thread to do this*/
